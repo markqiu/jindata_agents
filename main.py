@@ -1,8 +1,9 @@
+from textwrap import dedent
+
 from crewai import Crew
 
-from textwrap import dedent
-from agents import FinancialResearchAgents
-from tasks import MarkdownReportCreationTasks
+from jindata_agents.tasks import MarkdownReportCreationTasks
+from jindata_agents.tests.agents import FinancialResearchAgents
 
 
 class FinancialCrew:
@@ -26,17 +27,8 @@ class FinancialCrew:
 
         # Define your custom crew here
         crew = Crew(
-            agents=[
-                report_creator, 
-                chart_creator,
-                markdown_writer
-                ],
-            tasks=[
-                parse_inputs_task,
-                retrieve_metrics_data_task,
-                create_chart_task,
-                create_markdown_file_task
-                ],
+            agents=[report_creator, chart_creator, markdown_writer],
+            tasks=[parse_inputs_task, retrieve_metrics_data_task, create_chart_task, create_markdown_file_task],
             verbose=True,
         )
 
