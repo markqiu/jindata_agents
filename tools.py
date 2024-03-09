@@ -2,7 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 from langchain.tools import tool
-from pydantic.v1 import BaseModel, validator, Field
+from pydantic import BaseModel, validator, Field
 from typing import List
 import random
 import matplotlib.pyplot as plt

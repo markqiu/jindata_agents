@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-crewai = {version = "*", extras = ["tools"], python =  ">=3.10,<=3.13"}
+crewai = {version = "^0.19.0", extras = ["tools"], python =  ">=3.10,<=3.13"}
 matplotlib = "^3.8.3"
 quickfs = "^0.1.1"
 
