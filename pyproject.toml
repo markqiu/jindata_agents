@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "jindata-agents"
+version = "0.1.0"
+description = "finance agents for data retrieve, transform, format, and so on."
+authors = ["markqiu <qiucheng@jinniuai.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+crewai = "^0.19.0"
+crewai-tools = "^0.0.16"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.2"
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
