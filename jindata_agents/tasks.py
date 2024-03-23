@@ -5,45 +5,45 @@ from crewai import Task
 
 class MarkdownReportCreationTasks:
     def __tip_section(self):
-        return "If you do your BEST WORK and return exactly what I ask, I'll give you a $10,000 commission!"
+        return "You *MUST* do your best and if done well, I will give 10000 dollars!"
 
     def parse_input(self, agent, data: str):
         return Task(
             description=dedent(
                 f"""
-            **Task**: Extract relevant data from string.
-            **Description**: Take the input string and get the company
-            symbol out of it and also any metrics that are available.
+            **Task**: 使用工具(tool)从输入中抽取 symbol和数据名称列表.
+            **Description**: 使用工具(tool)从输入中抽取出 symbol和数据名称列表
 
             **Parameters**:
-            - data: {data}
+            - input: {data}
 
             **Notes**
             {self.__tip_section()}
             """
             ),
             agent=agent,
-            expected_output="""A list of dictionaries containing the symbol and metric.
-            Example output: `[{'symbol': 'MSTR', 'metric': 'cogs'}, {'symbol': 'MSTR', 'metric': 'fcf'}]`""",
+            expected_output="""一个包含 symbol和数据名称的字典
+            Example output: `{'symbol': 'SH600519', 'data_names': ['收盘价', '总资产']}`""",
         )
 
     def get_data_from_api(self, agent, context):
         return Task(
             description=dedent(
                 f"""
-            **Description**: For each metric, look up the metric for the symbol provided by using the tool.
+            **Description**: 首先对所有要获取的数据按照data_type分组,对每组数据,分别使用工具传入适当的参数获取所有的symbol的该分组数据。
+            如果不知道数据属于哪个分组,则采用缺省的data_type参数,即'factor'。
 
             **Notes**
-            You MUST use QuickFS to get data for EVERY metric that the client requests. You may have to complete this task multiple times.
+            You MUST use jindta to get data that the client requests. You may have to complete this task multiple times.
             {self.__tip_section()}
             """
             ),
             agent=agent,
             context=context,
-            expected_output="""A list of metrics and the data retrieved for each one.
+            expected_output="""A list of the data retrieved for each one.
             Example output: [
-                {metric:'fcf', data: [...data_points],
-                {metric:'cogs', data: [...data_points],
+                {data_name:'总资产', data: [...data_points],
+                {data_name:'营业收入', data: [...data_points],
                 {...}
                 ]""",
         )
@@ -61,7 +61,7 @@ class MarkdownReportCreationTasks:
             context=context,
             expected_output="""
                 A list of the file locations of the created charts.
-                Example output: [fcf_chart.png, cogs_chart.png]
+                Example output: [总资产.png, 营业收入.png]
                 """,
         )
 
@@ -71,7 +71,7 @@ class MarkdownReportCreationTasks:
                 f"""
                 **Task**: Insert markdown syntax to md file
                 **Description**: Take the input file location and insert it into a markdown file.
-                For Example: writes ![](fcf_chart.png) to markdown file.
+                For Example: writes ![](总资产.png) to markdown file.
 
                 YOU MUST USE MARKDOWN SYNTAX AT ALL TIMES.
 
@@ -82,8 +82,8 @@ class MarkdownReportCreationTasks:
             agent=agent,
             expected_output="""A report.md file formatted in markdown syntax.
             Example output:
-                ![](./COGS_chart.png)\n
-                ![](./FCF_chart.png)
+                ![](./营业收入.png)\n
+                ![](./总资产.png)
                 """,
             context=context,
         )
